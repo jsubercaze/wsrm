@@ -14,7 +14,7 @@ public class TestSavedMatrixRefactored {
 	public static void main(String[] args) {
 		BinaryMatrix matrix = MatrixParser.binaryMatrixFromFile(new File("matrxi.txt"));
 		System.out.println(matrix.getNumberOfOnes());
-		WSMRDecomposer.QUICKDEBUG = true;
+		
 		WSMRDecomposer largestCompute = new WSMRDecomposer(matrix, false, false, true);
 		System.out.println(matrix);
 		DecompositionResult res = largestCompute.computeDecomposition(MINRECTANGLESIZE);

@@ -12,7 +12,7 @@ import fr.tse.lt2c.satin.matrix.extraction.linkedmatrix.refactored.WSMRDecompose
 /**
  * Recursive deletion method. Is used to be compared against the greedy method
  * 
- * Complexity is high (see paper)
+ * Complexity is awfully high (see paper).
  * 
  * @author Julien Subercaze
  * 
@@ -42,8 +42,8 @@ public class RecursiveRectangleExtraction {
 			}
 		} while (rect.width * rect.height >= MIN_AREA);
 
-		return new DecompositionResult(System.currentTimeMillis() - t1, rectangles,
-				m.getNumberOfOnes());
+		return new DecompositionResult(System.currentTimeMillis() - t1,
+				rectangles, m.getNumberOfOnes());
 	}
 
 }

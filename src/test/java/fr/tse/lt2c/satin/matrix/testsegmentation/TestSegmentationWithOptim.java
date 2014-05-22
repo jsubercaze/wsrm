@@ -10,7 +10,7 @@ public class TestSegmentationWithOptim {
 
 	public static void main(String[] args) throws IOException {
 		File f = new File("imageDataset/leaves/Aronia melanocarpa 2.png");
-		WSMRDecomposer.DEBUG = false;
+		
 		SegmentImage segment = new SegmentImage(f);
 		segment.setUseOptimization(true);
 

@@ -16,7 +16,7 @@ public class FindBugsRefactored {
 		int resarea = 0;
 		int matrixarea = 0;
 		do {
-			BinaryMatrix matrix = new BinaryMatrix(512, 512, true, .6);
+			BinaryMatrix matrix = new BinaryMatrix(512, 512, .6);
 			matrixarea = matrix.getNumberOfOnes();
 			// System.out.println(matrixarea);
 			// FileUtils.writeStringToFile(new File("matrix.txt"),

@@ -16,7 +16,6 @@ public class LeavesEvaluation {
 			if (listOfFiles[i].isFile()) {
 				String files = listOfFiles[i].getName();
 				if (files.endsWith(".png")) {
-					WSMRDecomposer.DEBUG = false;
 					SegmentImage segment = new SegmentImage(listOfFiles[i]);
 					segment.setUseOptimization(true);
 					total += segment.segmentSpeed();

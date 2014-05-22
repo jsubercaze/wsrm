@@ -1,7 +1,7 @@
 package fr.tse.lt2c.satin.matrix.beans;
 
 /**
- * Element of the linked matrix
+ * Element of the linked matrix, contains pointers in the four directions
  * 
  * @author Julien Subercaze
  * 

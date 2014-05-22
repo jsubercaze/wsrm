@@ -4,6 +4,12 @@ import java.util.Comparator;
 
 import fr.tse.lt2c.satin.matrix.beans.SortableRectangle;
 
+/**
+ * Rectangle comparator, compare upper left corners in lexicographic order
+ * 
+ * @author Julien
+ * 
+ */
 public class PlaceRectangleComparator implements Comparator<SortableRectangle> {
 
 	@Override

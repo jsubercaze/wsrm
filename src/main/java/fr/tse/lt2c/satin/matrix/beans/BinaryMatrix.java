@@ -11,22 +11,48 @@ import java.util.Random;
  * 
  */
 public class BinaryMatrix {
-
-	private double ratio = 0.7; // Ratio of 1 in the random matrix
+	/**
+	 * Percentage of 1 in the matrix
+	 */
+	private double ratio = 0.7;
+	/**
+	 * Backing matrix
+	 */
 	public boolean[][] matrix;
+	/**
+	 * Rows
+	 */
 	int row;
+	/**
+	 * Columns
+	 */
 	int col;
+	/**
+	 * Number of ones
+	 */
 	private int numberOfOnes = -1;
 
-	public BinaryMatrix(int row, int col, boolean random, double ratio) {
+	/**
+	 * 
+	 * @param row
+	 *            number of rows
+	 * @param col
+	 *            number of columns
+	 * @param random
+	 *            if <code>true</code> fills the matrix with random values
+	 * @param ratio
+	 *            if <code>random</code> is set to <code>true</code>, percentage
+	 *            of 1-entries in the random matrix
+	 */
+	public BinaryMatrix(int row, int col, double ratio) {
 		super();
 		this.row = row;
 		this.col = col;
 		this.ratio = ratio;
 		matrix = new boolean[row][col];
-		if (random) {
-			generateRandom();
-		}// Otherwise full of 0, bool default values
+
+		generateRandom();
+
 	}
 
 	private void generateRandom() {
@@ -104,6 +130,10 @@ public class BinaryMatrix {
 		}
 	}
 
+	/**
+	 * 
+	 * @return the number of 1-entries in the matrix
+	 */
 	public int getNumberOfOnes() {
 		if (numberOfOnes == -1)
 			countNumberOfOnes();
@@ -127,7 +157,5 @@ public class BinaryMatrix {
 		}
 		return new BinaryMatrix(newmatrix, row, col);
 	}
-
-	
 
 }

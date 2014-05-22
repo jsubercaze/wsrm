@@ -1,5 +1,11 @@
 package fr.tse.lt2c.satin.matrix.beans;
 
+/**
+ * Temporary rectangle, for storage during decomposition process
+ * 
+ * @author Julien
+ * 
+ */
 public class TemporaryRectangle {
 
 	int height, width, area; // rectangle values
@@ -11,7 +17,10 @@ public class TemporaryRectangle {
 	int potentialSecondArea = -1;// Potential area after cut
 	private boolean validated;
 
-	public TemporaryRectangle(int height, int width, int area, LinkedMatrixElement upperLeftCorner, LinkedMatrixElement currentPosition, LinkedMatrixElement restartingPoint) {
+	public TemporaryRectangle(int height, int width, int area,
+			LinkedMatrixElement upperLeftCorner,
+			LinkedMatrixElement currentPosition,
+			LinkedMatrixElement restartingPoint) {
 		super();
 		this.height = height;
 		this.width = width;
@@ -95,15 +104,21 @@ public class TemporaryRectangle {
 
 	@Override
 	public String toString() {
-		
-		return "rectangle " + isValidated() + "[height=" + height + ", width=" + width + ", area=" + area + ", upperLeftCorner=" + upperLeftCorner.viewPosition() + ", currentPosition="
-				+ currentPosition.viewPosition() + ", lineBegin " + lastLineFirstElement.viewPosition() + "potentialArea" + potentialSecondArea + " ]\n";
+
+		return "rectangle " + isValidated() + "[height=" + height + ", width="
+				+ width + ", area=" + area + ", upperLeftCorner="
+				+ upperLeftCorner.viewPosition() + ", currentPosition="
+				+ currentPosition.viewPosition() + ", lineBegin "
+				+ lastLineFirstElement.viewPosition() + "potentialArea"
+				+ potentialSecondArea + " ]\n";
 
 	}
 
 	public void updateWithLastGoodPoint() {
-		this.height = this.currentPosition.getX() - this.upperLeftCorner.getX() + 1;
-		this.width = this.currentPosition.getY() - this.upperLeftCorner.getY() + 1;
+		this.height = this.currentPosition.getX() - this.upperLeftCorner.getX()
+				+ 1;
+		this.width = this.currentPosition.getY() - this.upperLeftCorner.getY()
+				+ 1;
 		this.area = this.height * this.width;
 	}
 

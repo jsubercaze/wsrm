@@ -12,9 +12,10 @@ import fr.tse.lt2c.satin.matrix.extraction.rowcolsegmentation.RowSegmentation;
 
 /**
  * Post extraction merging, non linear implementation, for decomposition quality
- * only. Straightforward/stupid implementation.
+ * only. Straightforward/stupid implementation. For test purpose. Values in the
+ * papers are computed with Zodop from Suk et al.
  * 
- * @author Julien
+ * @author Julien Subercaze
  * 
  */
 public class IBRNonLinear implements RectangleExtractor {
@@ -45,7 +46,7 @@ public class IBRNonLinear implements RectangleExtractor {
 				indexedByLine[rect.x] = new ArrayList<>();
 			indexedByLine[rect.x].add(rect);
 		}
-		//System.out.println(Arrays.toString(indexedByLine));
+		// System.out.println(Arrays.toString(indexedByLine));
 		// MergeEm
 		for (int i = 0; i < indexedByLine.length - 1; i++) {
 			if (toremove.size() > 0) {
@@ -64,7 +65,7 @@ public class IBRNonLinear implements RectangleExtractor {
 				SortableRectangle rect = up.get(j);
 				SortableRectangle tmp = getStartingAt(rect.y, down);
 				if (tmp != null && (tmp.y + tmp.width) == (rect.y + rect.width)) {
-					//System.out.println("here " + rect.y);
+					// System.out.println("here " + rect.y);
 					tmp.x = i;
 					tmp.height = rect.height + 1;
 					toremove.add(j);

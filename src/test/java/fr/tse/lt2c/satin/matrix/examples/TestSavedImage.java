@@ -17,7 +17,7 @@ public class TestSavedImage {
 				"po/mask2.png"));
 //		System.out.println(matrix);
 		System.out.println(matrix.getNumberOfOnes());
-		WSMRDecomposer.DEBUG=true;
+		
 		WSMRDecomposer optim = new WSMRDecomposer(
 				matrix);
 		System.out.println(matrix);

@@ -78,7 +78,7 @@ public class RowSegmenationMerging implements RectangleExtractor {
 		final int m = 1000;
 		/************************** END *******************************/
 
-		BinaryMatrix B = new BinaryMatrix(n, m, true, oneMixture);
+		BinaryMatrix B = new BinaryMatrix(n, m,  oneMixture);
 		System.out.println(B);
 
 		RowSegmenationMerging extractor = new RowSegmenationMerging(B, minArea);

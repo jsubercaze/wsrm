@@ -26,6 +26,12 @@ boolean[][] matrix= ...;
 BinaryMatrix matrix = new BinaryMatrix(matrix,row,col);
 ```
 
+or a random matrix, with a given percentage of 1-entries :
+```java
+BinaryMatrix matrix = new BinaryMatrix(matrix,row,col,percentage);
+```
+
+
 Then decompose the matrix into rectangles, 1 is the size of the smallest rectangle autorised :
 ```java
 WSMRDecomposer extractor = new WSMRDecomposer(matrix);
@@ -43,4 +49,4 @@ To run the test, use the following classes :
 
 ### Finding bugs
 
-If you happen to modify the (crappy) source code, use the FindBugsOptim to generate random matrices and test the validity of the decomposition. The method halts if a problem is encountered, runs forever otherwise !
+If you happen to modify the source code, use the FindBugsOptim to generate random matrices and test the validity of the decomposition. The method halts if a problem is encountered, runs forever otherwise !

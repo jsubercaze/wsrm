@@ -25,7 +25,7 @@ public class FindBugsOptim {
 		int resarea = 0;
 		int matrixarea = 0;
 		do {
-			BinaryMatrix matrix = new BinaryMatrix(7, 7, true, .7);
+			BinaryMatrix matrix = new BinaryMatrix(7, 7,  .7);
 			matrixarea = matrix.getNumberOfOnes();
 			System.out.println(matrixarea);
 			FileUtils.writeStringToFile(new File("matrix.txt"),

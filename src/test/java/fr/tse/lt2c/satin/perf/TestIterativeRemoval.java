@@ -13,7 +13,7 @@ public class TestIterativeRemoval {
 	private static final int MIN_AREA = 2;
 
 	public static void main(String[] args) {
-		BinaryMatrix m = new BinaryMatrix(200, 200, true, .7);
+		BinaryMatrix m = new BinaryMatrix(200, 200, .7);
 		WSMRDecomposer extractor = new WSMRDecomposer(m);
 
 		Rectangle rect = null;

@@ -10,9 +10,12 @@ import fr.tse.lt2c.satin.matrix.beans.SortableRectangle;
 import fr.tse.lt2c.satin.matrix.extraction.behaviors.RectangleExtractor;
 
 /**
- * Decompose a binary matrix <code>B : [n x m]</code> into a set of rectangles using row segmentation. <br />
+ * Decompose a binary matrix <code>B : [n x m]</code> into a set of rectangles
+ * using row segmentation. <br />
  * In this approach, a rectangle is 1 x k, k < m.<br />
- * In other words, rectangle are looked in a line, but cannot be stacked bnetween lines. This is obviously a poor qualitative decomposition, yet running in O(nxm) time.
+ * In other words, rectangle are looked in a line, but cannot be stacked
+ * bnetween lines. This is obviously a poor qualitative decomposition, yet
+ * running in O(nxm) time.
  * 
  * @author Christophe Gravier
  */
@@ -39,25 +42,50 @@ public class RowSegmentation implements RectangleExtractor {
 			int y = 0;
 			boolean rectangleInProgess = false;
 			for (int j = 0; j < B.getCol(); j++) {
-				if (!rectangleInProgess && B.matrix[i][j]) { // start of a new rectangle
-					if (j == (B.getCol() - 1)) { // but if it is the end this is a sole entry rectangle
+				if (!rectangleInProgess && B.matrix[i][j]) { // start of a new
+																// rectangle
+					if (j == (B.getCol() - 1)) { // but if it is the end this is
+													// a sole entry rectangle
 						rectangles.add(new SortableRectangle(i, j + 1, 1, 1));
 					} else { // the walker start a new rectangle at this point.
 						rectangleInProgess = true;
 						x = j;
 						y = j;
 					}
-				} else if (rectangleInProgess && (!(B.matrix[i][j]) || (j == (B.getCol() - 1)))) { // end of a rectangle (B[i][j] is zero or a right-size boundary) => add it to the collection
+				} else if (rectangleInProgess
+						&& (!(B.matrix[i][j]) || (j == (B.getCol() - 1)))) { // end
+																				// of
+																				// a
+																				// rectangle
+																				// (B[i][j]
+																				// is
+																				// zero
+																				// or
+																				// a
+																				// right-size
+																				// boundary)
+																				// =>
+																				// add
+																				// it
+																				// to
+																				// the
+																				// collection
 					int lastCount = (B.matrix[i][j]) ? 1 : 0;
-					rectangles.add(new SortableRectangle(i, x, (y - x + 1 + lastCount), 1));
+					rectangles.add(new SortableRectangle(i, x,
+							(y - x + 1 + lastCount), 1));
 					rectangleInProgess = false;
-				} else if (rectangleInProgess && B.matrix[i][j]) { // same rectangle continues, increment width
+				} else if (rectangleInProgess && B.matrix[i][j]) { // same
+																	// rectangle
+																	// continues,
+																	// increment
+																	// width
 					y++;
 				}
 			}
 		}
-		
-		return new DecompositionResult(System.nanoTime() - t1, rectangles, B.getNumberOfOnes());
+
+		return new DecompositionResult(System.nanoTime() - t1, rectangles,
+				B.getNumberOfOnes());
 	}
 
 	public static void main(String[] args) {
@@ -69,12 +97,13 @@ public class RowSegmentation implements RectangleExtractor {
 		final int m = 1000;
 		/************************** END *******************************/
 
-		BinaryMatrix B = new BinaryMatrix(n, m, true, oneMixture);
+		BinaryMatrix B = new BinaryMatrix(n, m, oneMixture);
 		System.out.println(B);
 
 		RowSegmentation extractor = new RowSegmentation(B, minArea);
 		DecompositionResult result = extractor.extractDisjointRectangles();
-		System.out.println("Elapsed time : " + TimeUnit.NANOSECONDS.toMillis(result.getTime()) + " ms.\n");
+		System.out.println("Elapsed time : "
+				+ TimeUnit.NANOSECONDS.toMillis(result.getTime()) + " ms.\n");
 
 		int nbOnes = 0;
 		for (SortableRectangle rect : result.getRectangle()) {

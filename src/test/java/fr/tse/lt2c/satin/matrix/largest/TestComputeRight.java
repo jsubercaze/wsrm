@@ -5,7 +5,7 @@ import fr.tse.lt2c.satin.matrix.largestrectangle.ComputeLargestRectangle;
 
 public class TestComputeRight {
 	public static void main(String[] args) {
-		BinaryMatrix m = new BinaryMatrix(7, 8, true, 0.7);
+		BinaryMatrix m = new BinaryMatrix(7, 8, 0.7);
 		System.out.println(m);
 		ComputeLargestRectangle computor = new ComputeLargestRectangle(m);
 		computor.compute(false,false,false,true);

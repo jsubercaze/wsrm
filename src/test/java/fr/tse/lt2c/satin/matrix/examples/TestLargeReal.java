@@ -16,7 +16,7 @@ public class TestLargeReal {
 	 */
 	public static void main(String[] args) throws IOException {
 		for (int i = 0; i < 100; i++) {
-			BinaryMatrix matrix = new BinaryMatrix(465, 465, true, .7);
+			BinaryMatrix matrix = new BinaryMatrix(465, 465,  .7);
 			// System.out.println(matrix);
 			// FileUtils.writeStringToFile(new File("matrix.txt"),
 			// matrix.toString());

@@ -45,8 +45,7 @@ public class LinkedMatrix {
 		root = new LinkedMatrixElement(-1, -1, false);
 		setHeight(matrix.length);
 		setWidth(matrix[getHeight() - 1].length);
-//		System.out.println(matrix.length);
-//		System.out.println(matrix[getHeight() - 1].length);
+
 		LinkedMatrixElement current = null, previous = null, currentRequiringNextDown = null;
 		boolean startedSettingNextDownUp = false; // Used to saved void hits,
 													// since setting is
@@ -72,14 +71,16 @@ public class LinkedMatrix {
 					// Check for setting the next down Pointer of the current
 					// element
 					if (!startedSettingNextDownUp) {
-						if (currentRequiringNextDown.getX() == i - 1 && currentRequiringNextDown.getY() == j) {
+						if (currentRequiringNextDown.getX() == i - 1
+								&& currentRequiringNextDown.getY() == j) {
 							startedSettingNextDownUp = true;
 						}
 					}
 					if (startedSettingNextDownUp) {
 						currentRequiringNextDown.setNextDown(current);
 						current.setPreviousUp(currentRequiringNextDown);
-						currentRequiringNextDown = currentRequiringNextDown.getNextRight();
+						currentRequiringNextDown = currentRequiringNextDown
+								.getNextRight();
 					}
 				}
 			}
@@ -96,7 +97,8 @@ public class LinkedMatrix {
 	 * @param rectangleWidth
 	 * @param rectangleHeight
 	 */
-	public void removeRectangle(LinkedMatrixElement origin, int rectangleHeight, int rectangleWidth) {
+	public void removeRectangle(LinkedMatrixElement origin,
+			int rectangleHeight, int rectangleWidth) {
 		if (rectangleHeight == 1 && rectangleWidth == 1) {
 			deleteElement(origin);
 		} else {
@@ -104,7 +106,8 @@ public class LinkedMatrix {
 			// Remove length elements for each line
 			for (int i = 0; i < rectangleHeight; i++) {
 				LinkedMatrixElement next = current;
-				if (!current.isNextElementDownConsecutiveNoValue() && !(i == (rectangleHeight - 1))) {
+				if (!current.isNextElementDownConsecutiveNoValue()
+						&& !(i == (rectangleHeight - 1))) {
 					System.out.println(this);
 					System.out.println("oRigin " + origin);
 
@@ -113,10 +116,12 @@ public class LinkedMatrix {
 				}
 				current = current.getNextDown();
 				for (int j = 0; j < rectangleWidth; j++) {
-					if (!next.isNextElementRightConsecutiveNoValue() && !(j == (rectangleWidth - 1))) {
+					if (!next.isNextElementRightConsecutiveNoValue()
+							&& !(j == (rectangleWidth - 1))) {
 						System.out.println(this);
 						System.out.println("oRigin " + origin);
-						System.out.println("Width " + rectangleWidth + "; i=" + i + " ;j=" + j);
+						System.out.println("Width " + rectangleWidth + "; i="
+								+ i + " ;j=" + j);
 						System.out.println("Right " + next);
 						System.exit(0);
 					}
@@ -128,6 +133,12 @@ public class LinkedMatrix {
 
 	}
 
+	/**
+	 * Delete the current element from the matrix
+	 * 
+	 * @param current
+	 * @return the next element in the eastern direction
+	 */
 	private LinkedMatrixElement deleteElement(LinkedMatrixElement current) {
 		// Update the pointers
 		if (current.nextDown != null)

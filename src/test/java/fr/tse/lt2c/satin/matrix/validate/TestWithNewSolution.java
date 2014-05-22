@@ -14,7 +14,7 @@ public class TestWithNewSolution {
 		BinaryMatrix matrix = MatrixParser.binaryMatrixFromFile(new File(
 				"matrices/matrix3.txt"));
 		System.out.println(matrix.getNumberOfOnes());
-		WSMRDecomposer.DEBUG = true;
+		
 		WSMRDecomposer largestCompute = new WSMRDecomposer(
 				matrix);
 		System.out.println(matrix);
