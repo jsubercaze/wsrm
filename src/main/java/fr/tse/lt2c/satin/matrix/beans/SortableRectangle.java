@@ -8,7 +8,8 @@ import java.awt.Rectangle;
  * @author Julien Subercaze
  * 
  */
-public class SortableRectangle extends Rectangle implements Comparable<SortableRectangle> {
+public class SortableRectangle extends Rectangle implements
+		Comparable<SortableRectangle> {
 
 	/**
 	 * 
@@ -23,13 +24,16 @@ public class SortableRectangle extends Rectangle implements Comparable<SortableR
 		// System.out.println("New Rectangle " + this.toString());
 	}
 
+	
+
 	public int compareTo(SortableRectangle arg0) {
 		return -Integer.compare(this.area, arg0.area);
 	}
 
 	@Override
 	public String toString() {
-		return "SortableRectangle [area=" + area + ", x=" + x + ", y=" + y + ", width=" + width + ", height=" + height + "]\n";
+		return "SortableRectangle [area=" + area + ", x=" + x + ", y=" + y
+				+ ", width=" + width + ", height=" + height + "]\n";
 	}
 
 	public int getArea() {
@@ -45,7 +49,7 @@ public class SortableRectangle extends Rectangle implements Comparable<SortableR
 	public boolean merged(SortableRectangle sortableRectangle) {
 		if (isSimplyVerticallyMergeable(sortableRectangle)) {
 			this.height += sortableRectangle.height;
-			
+
 			return true;
 		} else if (isSimplyHorizontallyMergeable(sortableRectangle)) {
 			this.width += sortableRectangle.width;
@@ -54,13 +58,17 @@ public class SortableRectangle extends Rectangle implements Comparable<SortableR
 		return false;
 	}
 
-	public boolean isSimplyVerticallyMergeable(SortableRectangle sortableRectangle) {
-		return ((this.width == sortableRectangle.width) && (this.y) == sortableRectangle.y && (this.x + this.height) == sortableRectangle.x);
+	public boolean isSimplyVerticallyMergeable(
+			SortableRectangle sortableRectangle) {
+		return ((this.width == sortableRectangle.width)
+				&& (this.y) == sortableRectangle.y && (this.x + this.height) == sortableRectangle.x);
 
 	}
 
-	public boolean isSimplyHorizontallyMergeable(SortableRectangle sortableRectangle) {
-		return ((this.height == sortableRectangle.height) && (this.x) == sortableRectangle.x && (this.y + this.width) == sortableRectangle.y);
+	public boolean isSimplyHorizontallyMergeable(
+			SortableRectangle sortableRectangle) {
+		return ((this.height == sortableRectangle.height)
+				&& (this.x) == sortableRectangle.x && (this.y + this.width) == sortableRectangle.y);
 	}
 
 }

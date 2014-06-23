@@ -13,7 +13,8 @@ import fr.tse.lt2c.satin.matrix.extraction.rowcolsegmentation.RowSegmentation;
 /**
  * Post extraction merging, non linear implementation, for decomposition quality
  * only. Straightforward/stupid implementation. For test purpose. Values in the
- * papers are computed with Zodop from Suk et al.
+ * papers are computed with the linear Version. Zodop implementation is even
+ * worst than this one.
  * 
  * @author Julien Subercaze
  * 

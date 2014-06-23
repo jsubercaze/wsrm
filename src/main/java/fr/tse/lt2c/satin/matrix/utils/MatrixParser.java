@@ -21,7 +21,7 @@ public class MatrixParser {
 		boolean[][] matrix = new boolean[height][width];
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				
+
 				if (img.getRGB(i, j) >= -1)
 					matrix[j][i] = true;
 			}
@@ -30,6 +30,7 @@ public class MatrixParser {
 	}
 
 	public static BinaryMatrix binaryMatrixFromFile(File file) {
+		Scanner in = null;
 		try {
 			String content = FileUtils.readFileToString(file);
 			String[] lines = content.split("\n");
@@ -44,7 +45,7 @@ public class MatrixParser {
 			for (String line : lines) {
 
 				int j = 0;
-				Scanner in = new Scanner(line);
+				in = new Scanner(line);
 				in.useDelimiter("[\\[\\p{Punct}\\s]+");
 				while (in.hasNext()) {
 
@@ -59,11 +60,16 @@ public class MatrixParser {
 				}
 				i++;
 			}
-
+			in.close();
 			return new BinaryMatrix(matrix, height, width);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+			} catch (Exception e) {
+
+			}
 		}
 		return null;
 	}

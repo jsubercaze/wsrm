@@ -31,8 +31,8 @@ import fr.tse.lt2c.satin.matrix.utils.RectangleDeque;
  * 
  *         22/02/13
  */
-public class WSMRDecomposer {
-	
+public class WSMRDecomposerWithLogs {
+	Logger logger = Logger.getLogger("LinkedMatrixExtraction");
 	public static Level DEBUG_LEVEL = Level.DEBUG;
 	/**
 	 * Minimum area for a rectangle to be kept in the final list
@@ -144,7 +144,7 @@ public class WSMRDecomposer {
 	 * 
 	 * @param m
 	 */
-	public WSMRDecomposer(BinaryMatrix m) {
+	public WSMRDecomposerWithLogs(BinaryMatrix m) {
 		super();
 		this.binaryMatrix = m;
 		temp1 = new int[m.getRow()][m.getCol()];
@@ -161,7 +161,7 @@ public class WSMRDecomposer {
 	 * @param movie
 	 *            create a movie from the decomposition (experimental)
 	 */
-	public WSMRDecomposer(BinaryMatrix m, boolean images, boolean movie) {
+	public WSMRDecomposerWithLogs(BinaryMatrix m, boolean images, boolean movie) {
 		super();
 		this.binaryMatrix = m;
 		temp1 = new int[m.getRow()][m.getCol()];
@@ -187,7 +187,7 @@ public class WSMRDecomposer {
 	 *            the largest (approximated) rectangle first then process the
 	 *            heuristic
 	 */
-	public WSMRDecomposer(BinaryMatrix m, boolean images, boolean movie,
+	public WSMRDecomposerWithLogs(BinaryMatrix m, boolean images, boolean movie,
 			boolean removelargest) {
 		super();
 		this.binaryMatrix = m;
@@ -211,7 +211,12 @@ public class WSMRDecomposer {
 		secondStep();
 		thirdStep();
 		fourthStep();
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug(matrixToString(temp1));
+			logger.debug(matrixToString(temp2));
+			logger.debug(matrixToString(temp3));
+			logger.debug(matrixToString(temp4));
+		}
 		return firstLargestRectangle();
 	}
 
@@ -383,14 +388,22 @@ public class WSMRDecomposer {
 	 */
 	public void preProcess() {
 		firstStep();
-		
+		if (logger.isDebugEnabled())
+			logger.debug(matrixToString(temp1));
 		secondStep();
-		
+		if (logger.isDebugEnabled())
+			logger.debug(matrixToString(temp2));
 		thirdStep();
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug(matrixToString(temp3));
+			logger.debug(matrixToString(temp4));
+		}
 		fourthStep();
 		preprocessed = true;
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------------");
+			logger.debug("----LARGEST------" + largestOne);
+		}
 	}
 
 	/**
@@ -405,7 +418,13 @@ public class WSMRDecomposer {
 			preProcess();
 		// System.out.println(linkedMatrix);
 		long t1 = System.nanoTime();
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("-------------------------------------");
+			logger.debug(matrixToString(temp1));
+			logger.debug(matrixToString(temp2));
+			// logger.debug(matrixToString(temp3));
+			// logger.debug(matrixToString(temp4));
+		}
 		rectangles = new ArrayList<>();
 		stack = new RectangleDeque(linkedMatrix.getHeight(),
 				linkedMatrix.getWidth());
@@ -429,12 +448,33 @@ public class WSMRDecomposer {
 				// Move to the first element of the matrix
 				currentPoint = linkedMatrix.getFirstElement();
 			}
-			
+			if (logger.isDebugEnabled()) {
+				logger.debug("-----------------------------------------------------");
+				logger.debug("-----------------------------------------------------");
+				logger.debug("Entering Stage, current point " + currentPoint);
+				logger.debug("Stack size " + stack.size());
+				logger.debug("Stack  " + stack);
+				logger.debug("XtoCheck " + xToCheck);
+				logger.debug("XTotal " + xTotal);
+				logger.debug("YtoCheck " + yToCheck);
+				logger.debug("YTotal " + yTotal);
+				logger.debug(rectangles);
+				logger.debug("Current AREA " + getArea(currentPoint));
+			}
 			if (this.generateImages || movie) {
 				generateImage();
 			}
 			process();
-			
+			if (logger.isDebugEnabled()) {
+				logger.debug(linkedMatrix);
+				logger.debug("YtoCheck " + yToCheck);
+				logger.debug("Area " + area);
+				logger.debug("XtoCheck " + xToCheck);
+				logger.debug("CurrentPoint " + currentPoint);
+				logger.debug("The stack" + stack);
+				logger.debug(rectangles.size());
+				logger.debug(rectangles);
+			}
 
 		} while (!linkedMatrix.isEmpty());
 		if (generateImages) {
@@ -458,9 +498,11 @@ public class WSMRDecomposer {
 		// if (lastpoint == currentPoint)
 		// System.exit(-1);
 		step++;
-	
+		if (logger.isDebugEnabled())
+			logger.debug("step " + step + ": " + currentPoint);
 		if (stack.size() == 0) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Stack empty");
 			// Add new rectangle
 			if (stackNewRectangle()) {
 				setCounters();
@@ -473,7 +515,8 @@ public class WSMRDecomposer {
 		} else {
 			areaTmp = getArea(currentPoint);
 			if (areaTmp > area) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Larger area " + areaTmp);
 				// Take care of previous rectangle
 				checkUpdateOldRectangle();
 				// Start new rectangle
@@ -487,7 +530,8 @@ public class WSMRDecomposer {
 					currentPoint = linkedMatrix.getFirstElement();
 
 			} else {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Go On");
 				// Update counters
 				updateCounters();
 				if (!foundAndMerge())
@@ -504,7 +548,13 @@ public class WSMRDecomposer {
 	private void setCounters() {
 		xToCheck = xTotal;
 		yToCheck = yTotal;
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("After set counters");
+			logger.debug("XtoCheck " + xToCheck);
+			logger.debug("XTotal " + xTotal);
+			logger.debug("YtoCheck " + yToCheck);
+			logger.debug("YTotal " + yTotal);
+		}
 
 	}
 
@@ -515,11 +565,18 @@ public class WSMRDecomposer {
 	private boolean foundAndMerge() {
 		if (stack.size() == 0)
 			return true;// can happen at the end
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Found and merge");
+			logger.debug("XtoCheck " + xToCheck);
+			logger.debug("XTotal " + xTotal);
+			logger.debug("YtoCheck " + yToCheck);
+			logger.debug("YTotal " + yTotal);
+		}
 		if (!(xToCheck == 0))
 			return false;
 		if (stack.size() == 1) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Remove lonely rectangle");
 			if (stack.peek().isValidated()) {
 				removeCurrentRectangle();
 
@@ -530,7 +587,8 @@ public class WSMRDecomposer {
 
 		// Rectangle found
 		if (!tryMerge()) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Rectangle found, emptystack");
 			stack.peek().setValidated(true);
 			stack.peek().setPotentialSecondArea(0);
 			emptyStack();
@@ -549,21 +607,26 @@ public class WSMRDecomposer {
 		// if (DEBUG && stack.size()>0)
 		// logger.debug("TryMerge " + stack);
 
-		
+		if (logger.isDebugEnabled())
+			logger.debug("Horizontal");
 		if (!mergeHorizontal()) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("didn't work");
 			if (mergeVertical()) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("worked vertical");
 				if (stack.peek().isValidated()) {
 					return false;
 				}
 				return true;
 			}
 		} else {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Worked horizontal " + stack);
 			return true;
 		}
-		
+		if (logger.isDebugEnabled())
+			logger.debug("Merge return false");
 		return false;
 
 	}
@@ -602,7 +665,8 @@ public class WSMRDecomposer {
 		if (yToCheck == yTotal)
 			stack.peek().setLastLineFirstElement(currentPoint);
 		if (yToCheck > 0) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Entering here");
 			--yToCheck;
 		}
 		if (yToCheck == 0) {
@@ -615,7 +679,13 @@ public class WSMRDecomposer {
 			}
 
 		}
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("After update counters");
+			logger.debug("XtoCheck " + xToCheck);
+			logger.debug("XTotal " + xTotal);
+			logger.debug("YtoCheck " + yToCheck);
+			logger.debug("YTotal " + yTotal);
+		}
 	}
 
 	/**
@@ -628,7 +698,8 @@ public class WSMRDecomposer {
 		if (stack.peek().isValidated())
 			return;
 		if (stack.peek().getHeight() == 1) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Set potential area to 0-0");
 			stack.peek().setWidth(
 					Math.max(currentPoint.getY()
 							- stack.peek().getUpperLeftCorner().getY(), 1));
@@ -636,14 +707,16 @@ public class WSMRDecomposer {
 			stack.peek().setValidated(true);
 		} else if (xToCheck == xTotal) {// First line
 			// Update width of the rectangle
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Updating width");
 			stack.peek().setWidth(
 					currentPoint.getY()
 							- stack.peek().getUpperLeftCorner().getY());
 			int potentialArea = (currentPoint.getY() - stack.peek()
 					.getLastLineFirstElement().getY())
 					* (xToCheck - 1);
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Set potential area to " + potentialArea);
 
 		} else if (stack.peek().getLastLineFirstElement()
 				.isNextElementDownConsecutive()
@@ -652,7 +725,11 @@ public class WSMRDecomposer {
 
 			// Update the height
 			stack.peek().setHeight(xTotal - xToCheck);
-			
+			if (logger.isDebugEnabled()) {
+				logger.debug("Set potential area to 0-1 height"
+						+ (xTotal - xToCheck));
+				logger.debug(stack);
+			}
 			stack.peek().setValidated(true);
 			// nothing under
 		} else {
@@ -677,14 +754,18 @@ public class WSMRDecomposer {
 	 * next move
 	 */
 	private void emptyStack() {
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Removing current rectangle " + stack);
+		}
 		removeCurrentRectangle();
 		while (stack.size() > 0 && stack.peek().isValidated()) {
-		
+			if (logger.isDebugEnabled())
+				logger.debug("Removing rectangle with no child " + stack);
 			removeCurrentRectangle();
 		}
 		if (stack.size() > 0) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Removing last cutted rectangle " + stack);
 			int potentialAreaVertical = (currentPoint.getY()
 					- stack.peek().getLastLineFirstElement().getY() + 1)
 					* (stack.peek().getHeight());
@@ -703,9 +784,15 @@ public class WSMRDecomposer {
 	 */
 	private void goNextElementEmptyStack() {
 		if (yToCheck == yTotal) {
-			
+			if (logger.isDebugEnabled()) {
+				logger.debug("yToCheck==0");
+				logger.debug("Try to go at (" + (currentPoint.getX() + 1) + ","
+						+ currentPoint.getY() + ")");
+			}
 			if (!currentPoint.isNextElementDownConsecutive()) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Do not match remove current point "
+							+ currentPoint);
 				stack.peek().setHeight(1);
 				stack.peek().setWidth(1);
 				stack.peek().setValidated(true);
@@ -729,7 +816,8 @@ public class WSMRDecomposer {
 		} else {
 			tryNextRight();
 		}
-		
+		if (logger.isDebugEnabled())
+			logger.debug("Point courant " + currentPoint);
 	}
 
 	/**
@@ -740,10 +828,13 @@ public class WSMRDecomposer {
 			lastpoint = currentPoint;
 			currentPoint = currentPoint.getNextRight();
 		} else {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Next right not good");
+
 			// Compute the potential second area
 			if (stack.size() > 0) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("remove or merge");
 
 				mergeOrRemove(true);
 			} else {
@@ -761,7 +852,8 @@ public class WSMRDecomposer {
 	private void mergeOrRemove(boolean isRight) {
 		if (isRight) { // case where we wanted to go right
 			if (stack.size() == 1 && xToCheck == xTotal) {// First line of empty
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Thefirst line of empty stack");// stack
 				TemporaryRectangle tempRectangle = stack.peek();
 				stack.peek()
 						.setWidth(
@@ -777,7 +869,8 @@ public class WSMRDecomposer {
 				stack.peek().setPotentialSecondArea(0);
 				if (tempRectangle.getLastLineFirstElement()
 						.isNextElementDownConsecutive()) {
-					
+					if (logger.isDebugEnabled())
+						logger.debug("Go down");// stack
 					stack.peek().setHeight(2);
 					xTotal++;
 					xToCheck++;
@@ -787,16 +880,19 @@ public class WSMRDecomposer {
 					currentPoint = tempRectangle.getLastLineFirstElement()
 							.getNextDown();
 				} else {
-					
+					if (logger.isDebugEnabled())
+						logger.debug("Remove");// stack
 					removeCurrentRectangle();
 					currentPoint = linkedMatrix.getFirstElement();
 
 				}
 			} else if (stack.size() > 1) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Merge or remove stack >1");
 				// try merge
 				if (xToCheck == xTotal) {// on the first line
-					
+					if (logger.isDebugEnabled())
+						logger.debug("On the line");
 					// update width
 					TemporaryRectangle tempRectangle = stack.peek();
 					stack.peek().setWidth(
@@ -835,12 +931,14 @@ public class WSMRDecomposer {
 					potentialVSvalidated(-1, -1);
 				}
 			} else {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Cut rectangle");
 				potentialVSvalidated(-1, -1);
 
 			}
 		} else {// case where we wanted to go down - stack point
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Stack point");
 			stack.peek().setHeight(1);
 			tryMerge();
 			lastpoint = currentPoint;
@@ -896,7 +994,9 @@ public class WSMRDecomposer {
 		}
 		// Remove the validated part
 		TemporaryRectangle tempRectangle = stack.peek();
-	
+		if (logger.isDebugEnabled()) {
+			logger.debug("Restart or delete and go down " + tempRectangle);
+		}
 		if (tempRectangle.isValidated()
 				&& tempRectangle.getPotentialSecondArea() == 0) {
 			removeCurrentRectangle();
@@ -931,17 +1031,22 @@ public class WSMRDecomposer {
 			LinkedMatrixElement cutPoint = tempRectangle.getCurrentPosition();
 			int height = cutPoint.getX()
 					- tempRectangle.getUpperLeftCorner().getX();
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Cutpoint " + cutPoint);
 			// Case where first element is point
 			if (height == 0 && (xToCheck == xTotal) && stack.size() == 1) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("First point");
 				tempRectangle.setWidth(1);
 				tempRectangle.setHeight(1);
 				if (!tryMerge())
 					removeCurrentRectangle();
-			
+				else {
+					logger.debug("MERGED !!");
+				}
 			} else if (height != 0) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Not a line " + height);
 				// Delete the rectangle
 				stack.poll();
 				tempRectangle.setHeight(height);
@@ -953,7 +1058,12 @@ public class WSMRDecomposer {
 						- tempRectangle.getUpperLeftCorner().getY() + 1;
 				lastpoint = currentPoint;
 				LinkedMatrixElement oldcurrent = currentPoint;
-				
+				if (logger.isDebugEnabled()) {
+					logger.debug("Last line element "
+							+ tempRectangle.getLastLineFirstElement());
+					logger.debug("Area "
+							+ getArea(tempRectangle.getLastLineFirstElement()));
+				}
 				currentPoint = tempRectangle.getLastLineFirstElement();
 				stackNewRectangle();
 				currentPoint = oldcurrent;
@@ -961,7 +1071,8 @@ public class WSMRDecomposer {
 				// Set the end of line
 				xToCheck--;
 				if (stack.size() == 0) {
-					
+					if (logger.isDebugEnabled())
+						logger.debug("Move out");
 					return;
 				}
 				// Want to go to the right
@@ -969,7 +1080,8 @@ public class WSMRDecomposer {
 			} else {
 				if (stack.size() == 0)
 					return;
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Was a line");
 				// Change the width of the rectangle
 				stack.peek()
 						.setWidth(
@@ -997,10 +1109,13 @@ public class WSMRDecomposer {
 	 * Try to acces the next point in the South direction
 	 */
 	private void tryNextDown() {
-		
+		if (logger.isDebugEnabled())
+			logger.debug("Current beginning line "
+					+ stack.peek().getLastLineFirstElement());
 		if (!stack.peek().getLastLineFirstElement()
 				.isNextElementDownConsecutive()) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("New line is not continuous");
 			// Update rectangle height
 			int newHeight = stack.peek().getLastLineFirstElement().getX()
 					- stack.peek().getUpperLeftCorner().getX() + 1;
@@ -1011,11 +1126,13 @@ public class WSMRDecomposer {
 			emptyStack();
 
 		} else {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("New line is continuous");
 			lastpoint = currentPoint;
 			currentPoint = stack.peek().getLastLineFirstElement().getNextDown();
 
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Current point " + currentPoint);
 		}
 	}
 
@@ -1039,7 +1156,8 @@ public class WSMRDecomposer {
 	 * @return <code>true</code> if a new rectangle is stacked
 	 */
 	private boolean stackNewRectangle() {
-		
+		if (logger.isDebugEnabled())
+			logger.debug("Stacking new rectangle");
 		int currentHeight = currentPoint.getX();
 		int currentWidth = currentPoint.getY();
 		int height = temp1[currentHeight][currentWidth];
@@ -1054,17 +1172,20 @@ public class WSMRDecomposer {
 					currentPoint, currentPoint));
 
 			if (stack.size() > 1) {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Try merge " + stack);
 				if (!tryMerge())
 					emptyStack();
 
 			} else {
-				
+				if (logger.isDebugEnabled())
+					logger.debug("Removing point " + stack);
 				removeCurrentRectangle();
 			}
 			return false;
 		} else {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("yToCheck " + yToCheck);
 			if (yTotal == 1) {// Point de rédemérrage en fonction de //
 								// largeur>1 ou
 								// non
@@ -1080,7 +1201,10 @@ public class WSMRDecomposer {
 			stack.add(new TemporaryRectangle(height, width, area, currentPoint,
 					currentPoint, restart));
 			stack.peek().setLastLineFirstElement(currentPoint);
-			
+			if (logger.isDebugEnabled()) {
+				if (stack.size() > 0)
+					logger.debug("Stacked " + stack.peek());
+			}
 
 		}
 		return true;
@@ -1106,12 +1230,19 @@ public class WSMRDecomposer {
 	 * @param width
 	 */
 	private void addRectangle(LinkedMatrixElement origin, int height, int width) {
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Removing rectangle " + origin + " width " + width
+					+ " height " + height);
+		}
 		if (width * height >= MIN_AREA)
 			rectangles.add(new SortableRectangle(origin.getX(), origin.getY(),
 					width, height));
 		linkedMatrix.removeRectangle(origin, height, width);
 
+		if (logger.isDebugEnabled()) {
+			logger.debug("After delete \n" + linkedMatrix);
+			logger.debug("Stack " + stack.size() + " : " + stack);
+		}
 
 	}
 
@@ -1122,7 +1253,8 @@ public class WSMRDecomposer {
 	 */
 	private boolean mergeVertical() {
 		if (stack.isVerticallyMergeable()) {
-			
+			if (logger.isDebugEnabled())
+				logger.debug("Merge vertical");
 			// Two becomes one
 			TemporaryRectangle oldlast = stack.poll();
 			TemporaryRectangle newLast = stack.peek();
@@ -1151,7 +1283,9 @@ public class WSMRDecomposer {
 					+ newLast.getHeight() - 1;
 			int expectedY = newLast.getUpperLeftCorner().getY()
 					+ newLast.getWidth() - 1;
-		
+			if (logger.isDebugEnabled())
+				logger.debug("XY :" + expectedX + "  " + expectedY + " "
+						+ newLast.getCurrentPosition());
 			if (xToCheck == 0
 					|| (expectedX == oldlast.getCurrentPosition().getX() && expectedY == oldlast
 							.getCurrentPosition().getY())) {
@@ -1161,12 +1295,14 @@ public class WSMRDecomposer {
 						.isNextElementDownConsecutive()
 						&& !oldlast.getCurrentPosition()
 								.isNextElementRightConsecutive()) {
-					
+					if (logger.isDebugEnabled())
+						logger.debug("Remove merged rectangle");
 					removeCurrentRectangle();
 					return false;
 				}
 			}
-			
+			if (logger.isDebugEnabled())
+				logger.debug("After vertical merge " + stack);
 			return true;
 		} else
 			return false;
@@ -1177,7 +1313,8 @@ public class WSMRDecomposer {
 	 * @return <code>true</code> if the horizontal merging occured
 	 */
 	private boolean mergeHorizontal() {
-		
+		if (logger.isDebugEnabled())
+			logger.debug("Merge horizontal");
 		if (stack.isHorizontallyMergeable()) {
 			// Two becomes one
 			TemporaryRectangle oldlast = stack.poll();
@@ -1222,7 +1359,8 @@ public class WSMRDecomposer {
 							.isNextElementDownConsecutive()
 							&& !oldlast.getCurrentPosition()
 									.isNextElementRightConsecutive()) {
-						
+						if (logger.isDebugEnabled())
+							logger.debug("Remove merged rectangle");
 						removeCurrentRectangle();
 						return false;
 					}
@@ -1248,7 +1386,13 @@ public class WSMRDecomposer {
 		xToCheck = xTotal
 				- (current.getCurrentPosition().getX()
 						- current.getUpperLeftCorner().getX() + 1) + 1;
-		
+		if (logger.isDebugEnabled()) {
+			logger.debug("After refresh counters");
+			logger.debug("XtoCheck " + xToCheck);
+			logger.debug("XTotal " + xTotal);
+			logger.debug("YtoCheck " + yToCheck);
+			logger.debug("YTotal " + yTotal);
+		}
 	}
 
 	/**
