@@ -25,7 +25,9 @@ public class SortableRectangle extends Rectangle implements
 	}
 
 	
-
+	/**
+	 * Descending order
+	 */
 	public int compareTo(SortableRectangle arg0) {
 		return -Integer.compare(this.area, arg0.area);
 	}

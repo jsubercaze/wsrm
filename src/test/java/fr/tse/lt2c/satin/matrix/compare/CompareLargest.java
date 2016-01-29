@@ -10,7 +10,11 @@ import fr.tse.lt2c.satin.matrix.beans.DecompositionResult;
 import fr.tse.lt2c.satin.matrix.extraction.ibr.IBRLinear;
 import fr.tse.lt2c.satin.matrix.extraction.linkedmatrix.refactored.WSMRDecomposer;
 import fr.tse.lt2c.satin.matrix.utils.MatrixParser;
-
+/**
+ * 
+ * @author Julien
+ *
+ */
 public class CompareLargest {
 
 	public static void main(String[] args) throws IOException {
