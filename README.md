@@ -1,7 +1,7 @@
 # WSRM Algorithm 
 
 The WSRM algorithm is an heuristic for the decomposition of binary matrix into non overlapping rectangles. It is a linear time approach
-that produces good decomposition, especially for rectilinear polygons.
+that produces good decomposition, especially for rectilinear polygons. It is a suitable alternative to the standard IBR algorithm.
 
 
 # Getting started
