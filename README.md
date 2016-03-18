@@ -4,6 +4,8 @@ The WSRM algorithm is an heuristic for the decomposition of binary matrix into n
 that produces good decomposition, especially for rectilinear polygons. It is a suitable alternative to the standard IBR algorithm.
 
 
+![Matrix decomposition](http://satin-ppl.telecom-st-etienne.fr/jsubercaze/img/sea16.png)
+
 # Getting started
 
 Create a binary matrix from a picture :
