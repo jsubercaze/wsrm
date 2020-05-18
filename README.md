@@ -52,3 +52,27 @@ To run the test, use the following classes :
 ### Finding bugs
 
 If you happen to modify the source code, use the FindBugsOptim to generate random matrices and test the validity of the decomposition. The method halts if a problem is encountered, runs forever otherwise !
+
+## Citation
+
+```latex
+@inproceedings{DBLP:conf/wea/SubercazeGR16,
+  author    = {Julien Subercaze and
+               Christophe Gravier and
+               Pierre{-}Olivier Rocher},
+  editor    = {Andrew V. Goldberg and
+               Alexander S. Kulikov},
+  title     = {A Merging Heuristic for the Rectangle Decomposition of Binary Matrices},
+  booktitle = {Experimental Algorithms - 15th International Symposium, {SEA} 2016,
+               St. Petersburg, Russia, June 5-8, 2016, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {9685},
+  pages     = {310--325},
+  publisher = {Springer},
+  year      = {2016},
+  url       = {https://doi.org/10.1007/978-3-319-38851-9\_21},
+  doi       = {10.1007/978-3-319-38851-9\_21},
+  timestamp = {Tue, 14 May 2019 10:00:42 +0200},
+  biburl    = {https://dblp.org/rec/conf/wea/SubercazeGR16.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
